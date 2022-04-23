@@ -1,0 +1,17 @@
+includes:
+  - vendor/phpstan/phpstan-symfony/extension.neon
+parameters:
+  level: 7
+  paths:
+    - src
+    - tests
+  checkMissingIterableValueType: false
+  checkGenericClassInNonGenericObjectType: false
+  symfony:
+    container_xml_path: var/cache/dev/Alejgarciarodriguez_SymfonyDemo_KernelDevDebugContainer.xml
+  scanDirectories:
+    - var/cache/dev/Symfony/Config
+  ignoreErrors:
+      -
+         message: '#Call to an undefined method [a-zA-Z0-9\\_]+::expects\(\)#'
+         path: tests

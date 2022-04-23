@@ -1,0 +1,6 @@
+#!/bin/sh
+
+SCRIPT=$(docker-compose run --no-deps --rm php grumphp run 2>&1)
+STATUS=$?
+echo "$SCRIPT"
+exit $STATUS

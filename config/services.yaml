@@ -1,0 +1,20 @@
+parameters:
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Alejgarciarodriguez\SymfonyDemo\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'
+            - '../src/Application/*/*/*{Command,Query}.php'
+
+    Alejgarciarodriguez\SymfonyDemo\Infrastructure\Http\:
+        resource: '../src/Infrastructure/Http/*/*Controller.php'
+        tags: [controller.service_arguments]
+
+    Alejgarciarodriguez\SymfonyDemo\Application\:
+        resource: '../src/Application/*/*/*Handler.php'
+        tags: [messenger.message_handler]

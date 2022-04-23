@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: .deployment/docker/nginx/Dockerfile
+      target: base
+    volumes:
+      - ./public:/var/www/html
+    ports:
+      - 8080:80
+    depends_on:
+      - php
+
+  php:
+    build:
+      context: .
+      dockerfile: .deployment/docker/php/Dockerfile
+    volumes:
+      - .:/var/app
+      - ~/.composer:/.composer
+    environment:
+      XDEBUG_CLIENT_HOST: ${XDEBUG_CLIENT_HOST}
+      XDEBUG_CLIENT_PORT: ${XDEBUG_CLIENT_PORT}
+      XDEBUG_IDE_KEY: ${XDEBUG_IDE_KEY}
+
+  postgres:
+    image: postgres:11.3-alpine
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-root}
+      POSTGRES_USER: ${POSTGRES_USER:-root}
+
+  openapi:
+    build:
+      dockerfile: .deployment/docker/swagger/Dockerfile
+      context: .
+    volumes:
+      - ./docs/openapi.yml:/docs/openapi.yml
+    ports:
+      - 7080:8080

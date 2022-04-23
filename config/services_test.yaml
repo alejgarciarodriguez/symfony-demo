@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    Alejgarciarodriguez\SymfonyDemo\Tests\Util\:
+        resource: '../tests/Util/*'
+    Alejgarciarodriguez\SymfonyDemo\Tests\Fixtures\:
+        resource: '../tests/Fixtures/*'

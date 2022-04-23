@@ -1,0 +1,356 @@
+openapi: "3.0.0"
+info:
+  version: 0.0.1
+  title: Symfony Demo
+  description: Symfony Demo
+
+paths:
+  /api/club:
+    put:
+      summary: Create club
+      operationId: CreateClub
+      tags:
+        - Club
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Club'
+      responses:
+        '201':
+          description: Create club
+        '400':
+          description: Name or budget is not valid
+  /api/club/{club}:
+    patch:
+      summary: Update club
+      operationId: UpdateClub
+      tags:
+        - Club
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                budget:
+                  type: number
+                  required: true
+      responses:
+        '204':
+          description: Club updated
+        '400':
+          description: Value not valid
+        '404':
+          description: Club not found
+    get:
+      summary: Get club
+      operationId: GetClub
+      tags:
+        - Club
+      responses:
+        '200':
+          description: Club found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Club'
+        '404':
+          description: Club not found
+  /api/player:
+    put:
+      summary: Create Player
+      operationId: CreatePlayer
+      tags:
+        - Player
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Player'
+      responses:
+        '201':
+          description: Player created
+        '400':
+          description: Name is not valid
+        '404':
+          description: Club not found
+        '409':
+          description: Insufficient budget to add this player to the club
+    get:
+      summary: Get Players
+      operationId: GetPlayers
+      tags:
+        - Player
+      parameters:
+        - name: orderBy
+          in: query
+          description: parameter to order by
+          required: false
+          schema:
+            type: string
+            default: 'desc'
+        - name: club
+          in: query
+          description: filter by club
+          required: false
+          schema:
+            type: string
+            default: null
+        - name: sortBy
+          in: query
+          description: field to sort by (name, salary)
+          required: false
+          schema:
+            type: string
+            default: 'salary'
+        - name: limit
+          in: query
+          description: max number of players
+          required: false
+          schema:
+            type: integer
+            default: 50
+        - name: page
+          in: query
+          description: page number
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Get Player list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                    example: 'success'
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Player'
+  /api/player/{name}:
+    get:
+      summary: Get player by name
+      operationId: GetReferee
+      tags:
+        - Player
+      parameters:
+        - name: name
+          in: path
+          description: search referee by name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Player found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Player'
+        '404':
+          description: Player not found
+    delete:
+      summary: Remove player by name
+      operationId: RemovePlayer
+      tags:
+        - Player
+      parameters:
+        - name: name
+          in: path
+          description: search referee by name
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Player removed
+        '404':
+          description: Player not found
+  /api/player/{name}/club:
+    delete:
+      summary: Remove player's club
+      operationId: RemovePlayerClub
+      tags:
+        - Player
+      parameters:
+        - name: name
+          in: path
+          description: player's name
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Club removed from player
+  /api/player/{player_name}/club/{club_name}:
+    put:
+      summary: Set player's club
+      operationId: SetPlayerClub
+      tags:
+        - Player
+      parameters:
+        - name: player_name
+          in: path
+          description: player's name
+          required: true
+          schema:
+            type: string
+        - name: club_name
+          in: path
+          description: player's club name
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Club set
+        '404':
+          description: Club not found
+        '409':
+          description: Insufficient budget to add this player to the club
+  /api/referee:
+    put:
+      summary: Create Referee
+      operationId: CreateReferee
+      tags:
+        - Referee
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Referee'
+      responses:
+        '201':
+          description: Club created
+        '400':
+          description: Name or salary is not valid
+        '404':
+          description: Club not found
+        '409':
+          description: Insufficient budget to add this referee to the club
+  /api/referee/{name}:
+    get:
+      summary: Get Referee by name
+      operationId: GetReferee
+      tags:
+        - Referee
+      parameters:
+        - name: name
+          in: path
+          description: search referee by name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Referee found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Referee'
+        '404':
+          description: Referee not found
+    delete:
+      summary: Removes Referee
+      operationId: RemoveReferee
+      tags:
+        - Referee
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Referee removed
+        '404':
+          description: Referee not found
+  /api/referee/{name}/club:
+    delete:
+      summary: Remove referee's club
+      operationId: RemoveRefereeClub
+      tags:
+        - Referee
+      parameters:
+        - name: name
+          in: path
+          description: referee's name
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Club removed from referee
+  /api/referee/{referee_name}/club/{club_name}:
+    put:
+      summary: Set referee's club
+      operationId: SetRefereeClub
+      tags:
+        - Referee
+      parameters:
+        - name: referee_name
+          in: path
+          description: referee's name
+          required: true
+          schema:
+            type: string
+        - name: club_name
+          in: path
+          description: referee's club name
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Club set
+        '404':
+          description: Club not found
+        '409':
+          description: Insufficient budget to add this referee to the club
+components:
+  schemas:
+    Club:
+      properties:
+        name:
+          type: string
+          required: true
+          maximum: 255
+        club:
+          type: string
+          required: false
+        budget:
+          type: number
+          required: true
+          minimum: 0
+    Referee:
+      properties:
+        name:
+          type: string
+          required: true
+        club:
+          type: string
+          required: false
+          nullable: true
+        salary:
+          type: number
+          required: true
+          minimum: 0
+    Player:
+      properties:
+        name:
+          type: string
+          required: true
+        club:
+          type: string
+          required: false
+          nullable: true
+        salary:
+          type: number
+          required: true
+          minimum: 0

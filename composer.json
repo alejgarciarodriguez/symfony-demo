@@ -1,0 +1,104 @@
+{
+    "name": "alejgarciarodriguez/symfony-demo",
+    "description": "Symfony demo project",
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "php": "8.0.*",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "beberlei/assert": "^3.3",
+        "composer/package-versions-deprecated": "^1",
+        "doctrine/doctrine-bundle": "^2.5.2",
+        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "doctrine/orm": "^2.10",
+        "symfony/console": "^5.4",
+        "symfony/dotenv": "^5.4",
+        "symfony/flex": "^1",
+        "symfony/framework-bundle": "^5.4",
+        "symfony/mailer": "^5.4",
+        "symfony/messenger": "^5.4",
+        "symfony/proxy-manager-bridge": "^5.4",
+        "symfony/runtime": "^5.4",
+        "symfony/yaml": "^5.4"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true,
+        "platform": {
+            "php": "8.0"
+        },
+        "allow-plugins": {
+            "symfony/flex": true,
+            "phpro/grumphp": true,
+            "symfony/runtime": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Alejgarciarodriguez\\SymfonyDemo\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Alejgarciarodriguez\\SymfonyDemo\\Tests\\": "tests/"
+        }
+    },
+    "replace": {
+        "symfony/polyfill-ctype": "*",
+        "symfony/polyfill-iconv": "*",
+        "symfony/polyfill-php72": "*",
+        "symfony/polyfill-php73": "*",
+        "symfony/polyfill-php74": "*",
+        "symfony/polyfill-php80": "*"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "git-hook": [
+            "rm -rf .git/hooks",
+            "mkdir -p .git/hooks",
+            "cp -r ./config/hooks/* .git/hooks"
+        ],
+        "post-install-cmd": [
+            "@auto-scripts",
+            "@git-hook"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
+    "conflict": {
+        "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "^5.4"
+        }
+    },
+    "require-dev": {
+        "behat/behat": "^3.8",
+        "behat/mink": "^1.9",
+        "behatch/contexts": "^3.3",
+        "dg/bypass-finals": "^1.3",
+        "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "friends-of-behat/mink-browserkit-driver": "^1.5",
+        "friends-of-behat/symfony-extension": "^2.0",
+        "phpro/grumphp": "^1.6",
+        "phpstan/phpstan": "^1.2",
+        "phpstan/phpstan-symfony": "^1.0",
+        "phpunit/phpunit": "^9.5",
+        "symfony/browser-kit": "^5.4",
+        "symfony/css-selector": "^5.4",
+        "symfony/maker-bundle": "^1.36",
+        "symfony/phpunit-bridge": "^5.4"
+    }
+}
